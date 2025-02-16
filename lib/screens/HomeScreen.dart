@@ -4,8 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 import '../services/AuthProvider.dart';
-import 'LoginScreen.dart';
-import 'RegisterScreen.dart';
 
 
 class HomeScreen extends StatefulWidget {

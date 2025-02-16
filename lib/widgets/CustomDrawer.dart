@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/LoginScreen.dart';
-import '../screens/RegisterScreen.dart';
+import '../screens/auth/LoginScreen.dart';
+import '../screens/auth/RegisterScreen.dart';
 import '../services/AuthProvider.dart';
 
 class CustomDrawer extends StatelessWidget {
