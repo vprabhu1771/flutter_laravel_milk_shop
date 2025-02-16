@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_laravel_milk_shop/widgets/CustomDrawer.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
@@ -54,90 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(widget.title),
       ),
       body: Center(child: Text('Home Screen')),
-      drawer: Drawer(
-        child: Consumer<AuthProvider>(
-          builder: (context, auth, child) {
-            if(!auth.authenticated)
-            {
-              return ListView(
-                  children: [
-                    ListTile(
-                      title: Text('Login'),
-                      leading: Icon(Icons.login),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => LoginScreen(title: 'Login Screen')),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text('Register'),
-                      leading: Icon(Icons.app_registration),
-                      onTap: () {
-                        // Handle logout logic
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterScreen(title: 'Register')),
-                        );
-                      },
-                    ),
-                  ]
-              );
-            }
-            else
-            {
-              String avatar = auth.user?.avatar as String;
-              String name = auth.user?.name as String;
-              String email = auth.user?.email as String;
-
-              return ListView(
-                children: [
-                  DrawerHeader(
-                    child: Column(
-                      children: [
-
-                        CircleAvatar(
-                          // backgroundColor: Colors.white,
-                          backgroundImage: NetworkImage(avatar),
-                          radius: 30,
-                        ),
-
-                        SizedBox(height: 10,),
-
-                        Text(
-                          name,
-                          style: TextStyle(color: Colors.white),
-                        ),
-
-                        SizedBox(height: 10,),
-
-                        Text(
-                          email,
-                          style: TextStyle(color: Colors.white),
-                        ),
-
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                  ),
-                  ListTile(
-                    title: Text('Logout'),
-                    leading: Icon(Icons.logout),
-                    onTap: () {
-                      // Handle logout logic
-                      Provider.of<AuthProvider>(context, listen: false).logout();
-                    },
-                  ),
-                ],
-              );
-            }
-
-          },
-        ),
-      ),
+      drawer: CustomDrawer(),
     );
   }
 }
