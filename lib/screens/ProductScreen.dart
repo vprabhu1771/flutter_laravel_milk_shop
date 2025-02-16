@@ -90,7 +90,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: ListTile(
                     leading: product.image_path.isNotEmpty ? Image.network(product.image_path, width: 50, height: 50, fit: BoxFit.cover,) : const Icon(Icons.image_not_supported),
                     title: Text(product.name),
-                    subtitle: Text(product.variants.isNotEmpty ? 'Variants: ${product.variants.length}' : 'No variants available'),
+                    subtitle: Text(product.variants.isNotEmpty ? product.variants.map((variant) => variant.qty).join(', ') : 'No variants available'),
                     onTap: () {
                       // Add navigation to ProductDetailScreen if required
                     },
