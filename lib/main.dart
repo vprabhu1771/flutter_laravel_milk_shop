@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_laravel_milk_shop/screens/HomeScreen.dart';
-import 'package:flutter_laravel_milk_shop/screens/ProductScreen.dart';
+import 'package:flutter_laravel_milk_shop/services/AuthProvider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
