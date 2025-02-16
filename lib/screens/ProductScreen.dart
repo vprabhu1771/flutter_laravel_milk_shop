@@ -83,22 +83,106 @@ class _ProductScreenState extends State<ProductScreen> {
 
                 final product = products[index];
 
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 8, horizontal: 16
-                  ),
-                  child: ListTile(
-                    leading: product.image_path.isNotEmpty ? Image.network(product.image_path, width: 50, height: 50, fit: BoxFit.cover,) : const Icon(Icons.image_not_supported),
-                    title: Text(product.name),
-                    subtitle: Text(product.variants.isNotEmpty ? product.variants.map((variant) => variant.qty).join(', ') : 'No variants available'),
-                    onTap: () {
-                      // Add navigation to ProductDetailScreen if required
-                    },
-                  )
-                );
+                return ProductCard(product: product);
               }
           ),
         )
+    );
+  }
+}
+
+
+class ProductCard extends StatefulWidget {
+  final Product product;
+  const ProductCard({super.key, required this.product});
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+class _ProductCardState extends State<ProductCard> {
+  int selectedVariantIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    final product = widget.product;
+    final selectedVariant = product.variants[selectedVariantIndex];
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Product image and name with Add to Cart button
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    product.image_path.isNotEmpty
+                        ? Image.network(
+                      product.image_path,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    )
+                        : const Icon(Icons.image_not_supported),
+                    const SizedBox(width: 16),
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    // Handle add to cart functionality
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('${product.name} added to cart'),
+                    ));
+                  },
+                  child: const Text('Add to Cart'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            // Footer: Variants toggle buttons and price display
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Variants:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  children: product.variants.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final variant = entry.value;
+                    return ChoiceChip(
+                      label: Text('${variant.qty}'),
+                      selected: selectedVariantIndex == index,
+                      onSelected: (bool selected) {
+                        if (selected) {
+                          setState(() {
+                            selectedVariantIndex = index;
+                          });
+                        }
+                      },
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  '₹ ${selectedVariant.unitPrice}',
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
