@@ -101,7 +101,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       print('logout started');
 
-      Dio.Response response = await dio().get(
+      Dio.Response response = await dio().post(
           Constants.BASE_URL + Constants.LOGOUT_ROUTE,
           options: Dio.Options(headers: {'Authorization' : 'Bearer $token'})
       );
